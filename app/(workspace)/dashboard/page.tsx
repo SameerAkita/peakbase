@@ -26,14 +26,14 @@ export default function DashboardPage() {
       <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
         <div className="panel-muted p-5">
           <p className="text-sm font-semibold text-zinc-950">Overview</p>
-          <p className="mt-3 text-sm leading-7 text-[var(--text-soft)]">
+          <p className="mt-3 text-sm leading-7 text-(--text-soft)">
             The main content area is set up to support charts, KPI rows, or any
             richer dashboard modules you want to add next.
           </p>
         </div>
         <div className="panel-muted p-5">
           <p className="text-sm font-semibold text-zinc-950">Status</p>
-          <p className="mt-3 text-sm leading-7 text-[var(--text-soft)]">
+          <p className="mt-3 text-sm leading-7 text-(--text-soft)">
             The sidebar remains fixed across routed pages, so the app already
             behaves like a real workspace shell instead of a one-page mock.
           </p>

@@ -35,8 +35,8 @@ export default function WorkspaceLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="app-shell mx-auto flex w-full max-w-[1600px] flex-col lg:flex-row">
-      <aside className="thin-scrollbar border-b border-[var(--border)] lg:sticky lg:top-0 lg:h-screen lg:w-[204px] lg:shrink-0 lg:border-r lg:border-b-0">
+    <div className="app-shell mx-auto flex w-full max-w-400 flex-col lg:flex-row">
+      <aside className="thin-scrollbar border-b border-(--border) lg:sticky lg:top-0 lg:h-screen lg:w-[204px] lg:shrink-0 lg:border-r lg:border-b-0">
         <div className="flex h-full flex-col px-3 py-4">
           <div className="px-1 pb-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--text-soft)]">
@@ -45,7 +45,7 @@ export default function WorkspaceLayout({
             <h1 className="mt-2 text-lg font-semibold tracking-tight text-zinc-950">
               Workspace
             </h1>
-            <p className="mt-1.5 text-xs leading-5 text-[var(--text-soft)]">
+            <p className="mt-1.5 text-xs leading-5 text-(--text-soft)">
               Navigate your main views.
             </p>
           </div>
@@ -95,7 +95,7 @@ export default function WorkspaceLayout({
           </div>
         </header>
 
-        <div className="pt-[4.25rem]">{children}</div>
+        <div className="pt-2">{children}</div>
       </div>
     </div>
   );

@@ -25,7 +25,7 @@ export default function PortfolioPage() {
     >
       <div className="panel-muted p-5">
         <p className="text-sm font-semibold text-zinc-950">Portfolio Summary</p>
-        <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--text-soft)]">
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-(--text-soft)">
           The structure here is intentionally simple so we can plug in real
           tables, charts, or item grids later without having to rethink the
           shell.

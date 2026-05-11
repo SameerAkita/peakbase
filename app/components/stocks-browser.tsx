@@ -361,40 +361,7 @@ export function StocksBrowser({ stockQuery }: { stockQuery?: string }) {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
-      <section className="panel flex flex-col gap-6 p-6 sm:p-8">
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-soft)]">
-                Stocks
-              </p>
-              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
-                Search a stock and review the data that matters by tab.
-              </h1>
-              <p className="mt-3 text-sm leading-7 text-[var(--text-soft)] sm:text-base">
-                Use the global searchbar to load a stock, then switch between
-                overview, financials, earnings, and other sections using the
-                same reusable card layout.
-              </p>
-            </div>
-
-            <div className="panel-muted w-full max-w-sm p-4">
-              <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-soft)]">
-                Favorites
-              </p>
-              <p className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950">
-                {favorites.length}
-              </p>
-              <p className="mt-2 text-sm leading-6 text-[var(--text-soft)]">
-                Keep important names pinned while you compare setups.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="panel flex flex-col gap-6 p-6 sm:p-8">
-        <div className="flex flex-col gap-5 border-b border-[var(--border)] pb-6">
+      <div className="flex flex-col gap-5 border-b border-(--border) pb-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex min-w-0 items-start gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-zinc-900 text-lg font-semibold text-white">
@@ -405,9 +372,6 @@ export function StocksBrowser({ stockQuery }: { stockQuery?: string }) {
                   <h2 className="text-2xl font-semibold tracking-tight text-zinc-950">
                     {selectedStock.name}
                   </h2>
-                  <span className="rounded-full border border-[var(--border)] bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--text-soft)]">
-                    {selectedStock.symbol}
-                  </span>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2 text-sm text-[var(--text-soft)]">
                   <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1.5">
@@ -417,9 +381,6 @@ export function StocksBrowser({ stockQuery }: { stockQuery?: string }) {
                     Country: {selectedStock.country}
                   </span>
                 </div>
-                <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--text-soft)]">
-                  {selectedStock.summary}
-                </p>
               </div>
             </div>
 
@@ -460,7 +421,7 @@ export function StocksBrowser({ stockQuery }: { stockQuery?: string }) {
             })}
           </div>
         </div>
-
+      <section className="panel flex flex-col gap-6 p-6 sm:p-8">
         <div className="grid gap-4 lg:grid-cols-3">
           {activeTab.boxes.map((box) => (
             <StockDataBox key={`${activeTab.id}-${box.title}`} {...box} />
