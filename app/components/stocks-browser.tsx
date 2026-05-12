@@ -270,7 +270,7 @@ function StockDataBox({ title, eyebrow, body, footer }: StockBox) {
 
 function OverviewWidgetsLayout() {
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-10">
+    <section className="grid grid-cols-1 gap-4 lg:grid-cols-10">
       <div className="flex flex-col gap-4 lg:col-span-7">
         <ChartWidget />
         <NewsWidget />
@@ -280,7 +280,7 @@ function OverviewWidgetsLayout() {
         <AnalystWidget />
         <EarningsWidget />
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -370,17 +370,15 @@ export function StocksBrowser({ stockQuery, currentTabId }: StocksBrowserProps) 
         </div>
       </div>
 
-      <section className="panel flex flex-col gap-6 p-6 sm:p-8">
-        {activeTab.id === "overview" ? (
-          <OverviewWidgetsLayout />
-        ) : (
-          <div className="grid gap-4 lg:grid-cols-3">
-            {activeTab.boxes.map((box) => (
-              <StockDataBox key={`${activeTab.id}-${box.title}`} {...box} />
-            ))}
-          </div>
-        )}
-      </section>
+      {activeTab.id === "overview" ? (
+        <OverviewWidgetsLayout />
+      ) : (
+        <section className="grid gap-4 lg:grid-cols-3">
+          {activeTab.boxes.map((box) => (
+            <StockDataBox key={`${activeTab.id}-${box.title}`} {...box} />
+          ))}
+        </section>
+      )}
     </main>
   );
 }
