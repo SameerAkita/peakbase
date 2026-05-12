@@ -1,6 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
+import { AnalystWidget } from "./stocks/widgets/analyst-widget";
+import { ChartWidget } from "./stocks/widgets/chart-widget";
+import { EarningsWidget } from "./stocks/widgets/earnings-widget";
+import { InfoWidget } from "./stocks/widgets/info-widget";
+import { NewsWidget } from "./stocks/widgets/news-widget";
 
 type StockBox = {
   title: string;
@@ -32,35 +38,12 @@ const stocks: StockProfile[] = [
     market: "NYSE",
     country: "United States",
     logo: "A",
-    summary:
-      "Consumer hardware and services with strong ecosystem retention and steady product-cycle interest.",
+    summary: "Consumer hardware and services.",
     tabs: [
       {
         id: "overview",
         label: "Overview",
-        boxes: [
-          {
-            title: "Price Chart",
-            eyebrow: "Chart",
-            body:
-              "A compact chart panel can live here with intraday or multi-period movement, plus simple overlays for volume or trend.",
-            footer: "Range: 1D, 1W, 1M, 1Y",
-          },
-          {
-            title: "Latest News",
-            eyebrow: "News",
-            body:
-              "Headline cards can summarize the biggest company updates, product launches, analyst moves, or regulatory developments.",
-            footer: "Updated from your chosen data source",
-          },
-          {
-            title: "Key Stats",
-            eyebrow: "Snapshot",
-            body:
-              "Use this box for market cap, P/E, dividend yield, beta, and other top-line metrics that help frame the name quickly.",
-            footer: "Metrics at a glance",
-          },
-        ],
+        boxes: [],
       },
       {
         id: "financials",
@@ -69,22 +52,19 @@ const stocks: StockProfile[] = [
           {
             title: "Revenue Trend",
             eyebrow: "Income Statement",
-            body:
-              "Quarterly and annual revenue visualizations fit well here, especially if you later compare growth rates across periods.",
+            body: "Quarterly and annual revenue visualizations.",
             footer: "Annual and quarterly views",
           },
           {
             title: "Margins",
             eyebrow: "Profitability",
-            body:
-              "Operating, gross, and net margin panels can show whether execution is improving or compressing over time.",
+            body: "Operating, gross, and net margin panels.",
             footer: "Tracked by reporting period",
           },
           {
             title: "Cash Position",
             eyebrow: "Balance Sheet",
-            body:
-              "Display cash, debt, and free cash flow context in one reusable box so capital strength is easy to review.",
+            body: "Cash, debt, and free cash flow context.",
             footer: "Liquidity and leverage",
           },
         ],
@@ -96,22 +76,19 @@ const stocks: StockProfile[] = [
           {
             title: "Next Report",
             eyebrow: "Calendar",
-            body:
-              "A date, consensus expectations, and countdown treatment work nicely here for the next scheduled earnings event.",
+            body: "Next scheduled earnings event.",
             footer: "Upcoming catalyst",
           },
           {
             title: "Surprise History",
             eyebrow: "Performance",
-            body:
-              "This section can show beats and misses over recent quarters, with a quick visual pattern for consistency.",
+            body: "Beats and misses over recent quarters.",
             footer: "Quarter-over-quarter context",
           },
           {
             title: "Call Notes",
             eyebrow: "Commentary",
-            body:
-              "Management guidance, sentiment, and notable themes from prior calls can be captured in a reusable notes panel.",
+            body: "Management guidance and notable themes.",
             footer: "Highlights and follow-ups",
           },
         ],
@@ -124,35 +101,12 @@ const stocks: StockProfile[] = [
     market: "NYSE",
     country: "United States",
     logo: "M",
-    summary:
-      "Platform-heavy business spanning cloud, software, and enterprise productivity with broad institutional attention.",
+    summary: "Platform-heavy business spanning cloud and software.",
     tabs: [
       {
         id: "overview",
         label: "Overview",
-        boxes: [
-          {
-            title: "Price Chart",
-            eyebrow: "Chart",
-            body:
-              "This panel can foreground trend structure, relative strength, and major price zones for cloud-led leadership names.",
-            footer: "Price and volume",
-          },
-          {
-            title: "Latest News",
-            eyebrow: "News",
-            body:
-              "Use the same reusable box shell for AI announcements, enterprise demand updates, or large partnership developments.",
-            footer: "Recent coverage",
-          },
-          {
-            title: "Key Stats",
-            eyebrow: "Snapshot",
-            body:
-              "A stable stat card works well for cloud mix, valuation multiples, and large-cap comparison metrics.",
-            footer: "Core metrics",
-          },
-        ],
+        boxes: [],
       },
       {
         id: "financials",
@@ -161,22 +115,19 @@ const stocks: StockProfile[] = [
           {
             title: "Segment Mix",
             eyebrow: "Revenue",
-            body:
-              "A structured box can break out productivity, cloud, and computing contributions without changing the page layout.",
+            body: "Productivity, cloud, and computing contributions.",
             footer: "By business line",
           },
           {
             title: "Operating Leverage",
             eyebrow: "Efficiency",
-            body:
-              "Highlight margin expansion and expense discipline through a consistent card format that scales across stocks.",
+            body: "Margin expansion and expense discipline.",
             footer: "Expense and margin view",
           },
           {
             title: "Cash Flow",
             eyebrow: "Cash",
-            body:
-              "Free cash flow strength, buybacks, and balance-sheet flexibility are a natural fit for this reusable module.",
+            body: "Free cash flow and buyback context.",
             footer: "Capital return context",
           },
         ],
@@ -188,22 +139,19 @@ const stocks: StockProfile[] = [
           {
             title: "Next Report",
             eyebrow: "Calendar",
-            body:
-              "Store the next print date, estimated EPS, and expected cloud commentary in a focused event box.",
+            body: "Next print date and estimated EPS.",
             footer: "Scheduled event",
           },
           {
             title: "Estimate Revisions",
             eyebrow: "Expectations",
-            body:
-              "Track how analyst expectations moved ahead of the quarter so the setup around earnings is easier to read.",
+            body: "How expectations moved ahead of quarter.",
             footer: "Consensus direction",
           },
           {
             title: "Management Themes",
             eyebrow: "Transcript",
-            body:
-              "Reusable notes boxes work well for recurring topics like AI monetization, demand visibility, and spending trends.",
+            body: "Recurring transcript talking points.",
             footer: "Recurring discussion points",
           },
         ],
@@ -216,35 +164,12 @@ const stocks: StockProfile[] = [
     market: "NYSE",
     country: "United States",
     logo: "N",
-    summary:
-      "High-growth semiconductor name often driven by AI infrastructure demand, supply dynamics, and valuation sensitivity.",
+    summary: "High-growth semiconductor name.",
     tabs: [
       {
         id: "overview",
         label: "Overview",
-        boxes: [
-          {
-            title: "Price Chart",
-            eyebrow: "Chart",
-            body:
-              "Momentum-heavy names benefit from a chart card that emphasizes trend acceleration, pullbacks, and range extension.",
-            footer: "Momentum view",
-          },
-          {
-            title: "Latest News",
-            eyebrow: "News",
-            body:
-              "Use a reusable news box here for chip demand, hyperscaler spending, export policy, or product roadmap updates.",
-            footer: "Headline flow",
-          },
-          {
-            title: "Key Stats",
-            eyebrow: "Snapshot",
-            body:
-              "Summarize valuation, growth, and volume-driven signals in the same card shell used for every other stock.",
-            footer: "Fast reference",
-          },
-        ],
+        boxes: [],
       },
       {
         id: "financials",
@@ -253,22 +178,19 @@ const stocks: StockProfile[] = [
           {
             title: "Growth Trend",
             eyebrow: "Revenue",
-            body:
-              "This card can show the pace of top-line expansion and whether acceleration is broad-based or concentrated.",
+            body: "Top-line expansion and acceleration.",
             footer: "Growth by period",
           },
           {
             title: "Demand Mix",
             eyebrow: "Segments",
-            body:
-              "A modular financial box is useful for data center, gaming, and other segment contributions over time.",
+            body: "Data center and gaming contributions.",
             footer: "Contribution view",
           },
           {
             title: "Cash Generation",
             eyebrow: "Cash Flow",
-            body:
-              "Highlight free cash flow and spending trends in a card that remains consistent across tabs and companies.",
+            body: "Free cash flow and spending trends.",
             footer: "Cash conversion",
           },
         ],
@@ -280,22 +202,19 @@ const stocks: StockProfile[] = [
           {
             title: "Next Report",
             eyebrow: "Calendar",
-            body:
-              "This event panel can capture guidance expectations, data-center demand assumptions, and key dates.",
+            body: "Guidance expectations and key dates.",
             footer: "Next catalyst",
           },
           {
             title: "Quarterly Surprises",
             eyebrow: "History",
-            body:
-              "A reusable history card can summarize beats, misses, and market reactions around recent earnings releases.",
+            body: "Beats, misses, and market reactions.",
             footer: "Reaction pattern",
           },
           {
             title: "Guidance Watch",
             eyebrow: "Focus",
-            body:
-              "Use this space for the handful of guidance signals you care most about heading into the next quarter.",
+            body: "Signals to monitor into next quarter.",
             footer: "What to watch",
           },
         ],
@@ -305,6 +224,7 @@ const stocks: StockProfile[] = [
 ];
 
 const defaultTabId = "overview";
+const validTabIds = new Set(["overview", "financials", "earnings"]);
 
 function findStockByQuery(query?: string) {
   const normalizedQuery = query?.trim().toLowerCase();
@@ -325,6 +245,16 @@ function findStockByQuery(query?: string) {
   );
 }
 
+function normalizeTabId(tabId?: string) {
+  const normalizedTabId = tabId?.trim().toLowerCase();
+
+  if (!normalizedTabId || !validTabIds.has(normalizedTabId)) {
+    return defaultTabId;
+  }
+
+  return normalizedTabId;
+}
+
 function StockDataBox({ title, eyebrow, body, footer }: StockBox) {
   return (
     <article className="panel flex h-full flex-col p-5">
@@ -332,18 +262,37 @@ function StockDataBox({ title, eyebrow, body, footer }: StockBox) {
         {eyebrow}
       </p>
       <h3 className="mt-3 text-base font-semibold text-zinc-950">{title}</h3>
-      <p className="mt-3 flex-1 text-sm leading-7 text-[var(--text-soft)]">
-        {body}
-      </p>
+      <p className="mt-3 flex-1 text-sm leading-7 text-[var(--text-soft)]">{body}</p>
       <p className="mt-4 text-xs font-medium text-zinc-500">{footer}</p>
     </article>
   );
 }
 
-export function StocksBrowser({ stockQuery }: { stockQuery?: string }) {
-  const [selectedTabId, setSelectedTabId] = useState(defaultTabId);
+function OverviewWidgetsLayout() {
+  return (
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-10">
+      <div className="flex flex-col gap-4 lg:col-span-7">
+        <ChartWidget />
+        <NewsWidget />
+      </div>
+      <div className="flex flex-col gap-4 lg:col-span-3">
+        <InfoWidget />
+        <AnalystWidget />
+        <EarningsWidget />
+      </div>
+    </div>
+  );
+}
+
+type StocksBrowserProps = {
+  stockQuery?: string;
+  currentTabId?: string;
+};
+
+export function StocksBrowser({ stockQuery, currentTabId }: StocksBrowserProps) {
   const [favorites, setFavorites] = useState<string[]>([]);
   const selectedStock = findStockByQuery(stockQuery);
+  const selectedTabId = normalizeTabId(currentTabId);
 
   const activeTab =
     selectedStock.tabs.find((tab) => tab.id === selectedTabId) ??
@@ -362,71 +311,75 @@ export function StocksBrowser({ stockQuery }: { stockQuery?: string }) {
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
       <div className="flex flex-col gap-5 border-b border-(--border) pb-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div className="flex min-w-0 items-start gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-zinc-900 text-lg font-semibold text-white">
-                {selectedStock.logo}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex min-w-0 items-start gap-4">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-zinc-900 text-lg font-semibold text-white">
+              {selectedStock.logo}
+            </div>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <h2 className="text-2xl font-semibold tracking-tight text-zinc-950">
+                  {selectedStock.name}
+                </h2>
               </div>
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                  <h2 className="text-2xl font-semibold tracking-tight text-zinc-950">
-                    {selectedStock.name}
-                  </h2>
-                </div>
-                <div className="mt-3 flex flex-wrap gap-2 text-sm text-[var(--text-soft)]">
-                  <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1.5">
-                    Market: {selectedStock.market}
-                  </span>
-                  <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1.5">
-                    Country: {selectedStock.country}
-                  </span>
-                </div>
+              <div className="mt-3 flex flex-wrap gap-2 text-sm text-[var(--text-soft)]">
+                <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1.5">
+                  Market: {selectedStock.market}
+                </span>
+                <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1.5">
+                  Country: {selectedStock.country}
+                </span>
               </div>
             </div>
-
-            <button
-              type="button"
-              onClick={() => handleToggleFavorite(selectedStock.symbol)}
-              aria-pressed={isFavorite}
-              className={[
-                "inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm font-medium transition-colors sm:self-start",
-                isFavorite
-                  ? "border-zinc-900 bg-zinc-900 text-white"
-                  : "border-[var(--border)] bg-white text-zinc-700 hover:bg-[var(--surface-muted)] hover:text-zinc-950",
-              ].join(" ")}
-            >
-              {isFavorite ? "Favorited" : "Favorite"}
-            </button>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {selectedStock.tabs.map((tab) => {
-              const isActive = tab.id === activeTab.id;
-
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setSelectedTabId(tab.id)}
-                  className={[
-                    "rounded-full px-4 py-2 text-sm font-medium transition-colors",
-                    isActive
-                      ? "bg-zinc-900 text-white"
-                      : "bg-[var(--surface-muted)] text-zinc-600 hover:bg-white hover:text-zinc-950",
-                  ].join(" ")}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
+          <button
+            type="button"
+            onClick={() => handleToggleFavorite(selectedStock.symbol)}
+            aria-pressed={isFavorite}
+            className={[
+              "inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm font-medium transition-colors sm:self-start",
+              isFavorite
+                ? "border-zinc-900 bg-zinc-900 text-white"
+                : "border-[var(--border)] bg-white text-zinc-700 hover:bg-[var(--surface-muted)] hover:text-zinc-950",
+            ].join(" ")}
+          >
+            {isFavorite ? "Favorited" : "Favorite"}
+          </button>
         </div>
+
+        <div className="flex flex-wrap gap-2">
+          {selectedStock.tabs.map((tab) => {
+            const isActive = tab.id === activeTab.id;
+
+            return (
+              <Link
+                key={tab.id}
+                href={`/stocks/${selectedStock.symbol.toLowerCase()}/${tab.id}`}
+                className={[
+                  "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-zinc-900 text-white"
+                    : "bg-[var(--surface-muted)] text-zinc-600 hover:bg-white hover:text-zinc-950",
+                ].join(" ")}
+              >
+                {tab.label}
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
       <section className="panel flex flex-col gap-6 p-6 sm:p-8">
-        <div className="grid gap-4 lg:grid-cols-3">
-          {activeTab.boxes.map((box) => (
-            <StockDataBox key={`${activeTab.id}-${box.title}`} {...box} />
-          ))}
-        </div>
+        {activeTab.id === "overview" ? (
+          <OverviewWidgetsLayout />
+        ) : (
+          <div className="grid gap-4 lg:grid-cols-3">
+            {activeTab.boxes.map((box) => (
+              <StockDataBox key={`${activeTab.id}-${box.title}`} {...box} />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );

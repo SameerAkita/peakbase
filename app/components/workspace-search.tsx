@@ -6,8 +6,9 @@ export function WorkspaceSearch() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const isStocksPage = pathname === "/stocks";
-  const stockQuery = searchParams.get("stock") ?? "";
+  const isStocksPage = pathname === "/stocks" || pathname.startsWith("/stocks/");
+  const stockQueryFromPath = pathname.match(/^\/stocks\/([^/]+)/i)?.[1] ?? "";
+  const stockQuery = stockQueryFromPath || searchParams.get("stock") || "";
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -16,22 +17,20 @@ export function WorkspaceSearch() {
       return;
     }
 
-    const nextParams = new URLSearchParams(searchParams.toString());
     const formData = new FormData(event.currentTarget);
     const submittedValue = formData.get("workspace-search");
     const nextValue =
       typeof submittedValue === "string" ? submittedValue.trim().toUpperCase() : "";
 
     if (nextValue) {
-      nextParams.set("stock", nextValue);
+      router.replace(`/stocks/${nextValue.toLowerCase()}/overview`, {
+        scroll: false,
+      });
     } else {
-      nextParams.delete("stock");
+      router.replace("/stocks/aapl/overview", {
+        scroll: false,
+      });
     }
-
-    const nextQuery = nextParams.toString();
-    router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, {
-      scroll: false,
-    });
   }
 
   return (
