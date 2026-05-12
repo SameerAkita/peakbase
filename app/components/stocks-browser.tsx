@@ -18,7 +18,6 @@ type StockBox = {
 type StockTab = {
   id: string;
   label: string;
-  boxes: StockBox[];
 };
 
 type StockProfile = {
@@ -28,8 +27,13 @@ type StockProfile = {
   country: string;
   logo: string;
   summary: string;
-  tabs: StockTab[];
+  financialBoxes: StockBox[];
 };
+
+const tabs: StockTab[] = [
+  { id: "overview", label: "Overview" },
+  { id: "financials", label: "Financials" },
+];
 
 const stocks: StockProfile[] = [
   {
@@ -39,16 +43,7 @@ const stocks: StockProfile[] = [
     country: "United States",
     logo: "A",
     summary: "Consumer hardware and services.",
-    tabs: [
-      {
-        id: "overview",
-        label: "Overview",
-        boxes: [],
-      },
-      {
-        id: "financials",
-        label: "Financials",
-        boxes: [
+    financialBoxes: [
           {
             title: "Revenue Trend",
             eyebrow: "Income Statement",
@@ -67,32 +62,6 @@ const stocks: StockProfile[] = [
             body: "Cash, debt, and free cash flow context.",
             footer: "Liquidity and leverage",
           },
-        ],
-      },
-      {
-        id: "earnings",
-        label: "Earnings",
-        boxes: [
-          {
-            title: "Next Report",
-            eyebrow: "Calendar",
-            body: "Next scheduled earnings event.",
-            footer: "Upcoming catalyst",
-          },
-          {
-            title: "Surprise History",
-            eyebrow: "Performance",
-            body: "Beats and misses over recent quarters.",
-            footer: "Quarter-over-quarter context",
-          },
-          {
-            title: "Call Notes",
-            eyebrow: "Commentary",
-            body: "Management guidance and notable themes.",
-            footer: "Highlights and follow-ups",
-          },
-        ],
-      },
     ],
   },
   {
@@ -102,16 +71,7 @@ const stocks: StockProfile[] = [
     country: "United States",
     logo: "M",
     summary: "Platform-heavy business spanning cloud and software.",
-    tabs: [
-      {
-        id: "overview",
-        label: "Overview",
-        boxes: [],
-      },
-      {
-        id: "financials",
-        label: "Financials",
-        boxes: [
+    financialBoxes: [
           {
             title: "Segment Mix",
             eyebrow: "Revenue",
@@ -130,32 +90,6 @@ const stocks: StockProfile[] = [
             body: "Free cash flow and buyback context.",
             footer: "Capital return context",
           },
-        ],
-      },
-      {
-        id: "earnings",
-        label: "Earnings",
-        boxes: [
-          {
-            title: "Next Report",
-            eyebrow: "Calendar",
-            body: "Next print date and estimated EPS.",
-            footer: "Scheduled event",
-          },
-          {
-            title: "Estimate Revisions",
-            eyebrow: "Expectations",
-            body: "How expectations moved ahead of quarter.",
-            footer: "Consensus direction",
-          },
-          {
-            title: "Management Themes",
-            eyebrow: "Transcript",
-            body: "Recurring transcript talking points.",
-            footer: "Recurring discussion points",
-          },
-        ],
-      },
     ],
   },
   {
@@ -165,16 +99,7 @@ const stocks: StockProfile[] = [
     country: "United States",
     logo: "N",
     summary: "High-growth semiconductor name.",
-    tabs: [
-      {
-        id: "overview",
-        label: "Overview",
-        boxes: [],
-      },
-      {
-        id: "financials",
-        label: "Financials",
-        boxes: [
+    financialBoxes: [
           {
             title: "Growth Trend",
             eyebrow: "Revenue",
@@ -193,38 +118,12 @@ const stocks: StockProfile[] = [
             body: "Free cash flow and spending trends.",
             footer: "Cash conversion",
           },
-        ],
-      },
-      {
-        id: "earnings",
-        label: "Earnings",
-        boxes: [
-          {
-            title: "Next Report",
-            eyebrow: "Calendar",
-            body: "Guidance expectations and key dates.",
-            footer: "Next catalyst",
-          },
-          {
-            title: "Quarterly Surprises",
-            eyebrow: "History",
-            body: "Beats, misses, and market reactions.",
-            footer: "Reaction pattern",
-          },
-          {
-            title: "Guidance Watch",
-            eyebrow: "Focus",
-            body: "Signals to monitor into next quarter.",
-            footer: "What to watch",
-          },
-        ],
-      },
     ],
   },
 ];
 
 const defaultTabId = "overview";
-const validTabIds = new Set(["overview", "financials", "earnings"]);
+const validTabIds = new Set(["overview", "financials"]);
 
 function findStockByQuery(query?: string) {
   const normalizedQuery = query?.trim().toLowerCase();
@@ -270,12 +169,12 @@ function StockDataBox({ title, eyebrow, body, footer }: StockBox) {
 
 function OverviewWidgetsLayout() {
   return (
-    <section className="grid grid-cols-1 gap-4 lg:grid-cols-10">
-      <div className="flex flex-col gap-4 lg:col-span-7">
+    <section className="flex flex-col gap-4 lg:flex-row lg:items-start">
+      <div className="flex flex-col gap-4 lg:w-[70%]">
         <ChartWidget />
         <NewsWidget />
       </div>
-      <div className="flex flex-col gap-4 lg:col-span-3">
+      <div className="flex flex-col gap-4 lg:w-[30%]">
         <InfoWidget />
         <AnalystWidget />
         <EarningsWidget />
@@ -294,9 +193,7 @@ export function StocksBrowser({ stockQuery, currentTabId }: StocksBrowserProps) 
   const selectedStock = findStockByQuery(stockQuery);
   const selectedTabId = normalizeTabId(currentTabId);
 
-  const activeTab =
-    selectedStock.tabs.find((tab) => tab.id === selectedTabId) ??
-    selectedStock.tabs[0];
+  const activeTab = tabs.find((tab) => tab.id === selectedTabId) ?? tabs[0];
 
   const isFavorite = favorites.includes(selectedStock.symbol);
 
@@ -349,7 +246,7 @@ export function StocksBrowser({ stockQuery, currentTabId }: StocksBrowserProps) 
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {selectedStock.tabs.map((tab) => {
+          {tabs.map((tab) => {
             const isActive = tab.id === activeTab.id;
 
             return (
@@ -374,7 +271,7 @@ export function StocksBrowser({ stockQuery, currentTabId }: StocksBrowserProps) 
         <OverviewWidgetsLayout />
       ) : (
         <section className="grid gap-4 lg:grid-cols-3">
-          {activeTab.boxes.map((box) => (
+          {selectedStock.financialBoxes.map((box) => (
             <StockDataBox key={`${activeTab.id}-${box.title}`} {...box} />
           ))}
         </section>
