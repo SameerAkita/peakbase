@@ -2,32 +2,16 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { getStockByQuery } from "./stocks/data";
 import { AnalystWidget } from "./stocks/widgets/analyst-widget";
 import { ChartWidget } from "./stocks/widgets/chart-widget";
 import { EarningsWidget } from "./stocks/widgets/earnings-widget";
 import { InfoWidget } from "./stocks/widgets/info-widget";
 import { NewsWidget } from "./stocks/widgets/news-widget";
 
-type StockBox = {
-  title: string;
-  eyebrow: string;
-  body: string;
-  footer: string;
-};
-
 type StockTab = {
   id: string;
   label: string;
-};
-
-type StockProfile = {
-  symbol: string;
-  name: string;
-  market: string;
-  country: string;
-  logo: string;
-  summary: string;
-  financialBoxes: StockBox[];
 };
 
 const tabs: StockTab[] = [
@@ -35,114 +19,8 @@ const tabs: StockTab[] = [
   { id: "financials", label: "Financials" },
 ];
 
-const stocks: StockProfile[] = [
-  {
-    symbol: "AAPL",
-    name: "Apple",
-    market: "NYSE",
-    country: "United States",
-    logo: "A",
-    summary: "Consumer hardware and services.",
-    financialBoxes: [
-          {
-            title: "Revenue Trend",
-            eyebrow: "Income Statement",
-            body: "Quarterly and annual revenue visualizations.",
-            footer: "Annual and quarterly views",
-          },
-          {
-            title: "Margins",
-            eyebrow: "Profitability",
-            body: "Operating, gross, and net margin panels.",
-            footer: "Tracked by reporting period",
-          },
-          {
-            title: "Cash Position",
-            eyebrow: "Balance Sheet",
-            body: "Cash, debt, and free cash flow context.",
-            footer: "Liquidity and leverage",
-          },
-    ],
-  },
-  {
-    symbol: "MSFT",
-    name: "Microsoft",
-    market: "NYSE",
-    country: "United States",
-    logo: "M",
-    summary: "Platform-heavy business spanning cloud and software.",
-    financialBoxes: [
-          {
-            title: "Segment Mix",
-            eyebrow: "Revenue",
-            body: "Productivity, cloud, and computing contributions.",
-            footer: "By business line",
-          },
-          {
-            title: "Operating Leverage",
-            eyebrow: "Efficiency",
-            body: "Margin expansion and expense discipline.",
-            footer: "Expense and margin view",
-          },
-          {
-            title: "Cash Flow",
-            eyebrow: "Cash",
-            body: "Free cash flow and buyback context.",
-            footer: "Capital return context",
-          },
-    ],
-  },
-  {
-    symbol: "NVDA",
-    name: "NVIDIA",
-    market: "NYSE",
-    country: "United States",
-    logo: "N",
-    summary: "High-growth semiconductor name.",
-    financialBoxes: [
-          {
-            title: "Growth Trend",
-            eyebrow: "Revenue",
-            body: "Top-line expansion and acceleration.",
-            footer: "Growth by period",
-          },
-          {
-            title: "Demand Mix",
-            eyebrow: "Segments",
-            body: "Data center and gaming contributions.",
-            footer: "Contribution view",
-          },
-          {
-            title: "Cash Generation",
-            eyebrow: "Cash Flow",
-            body: "Free cash flow and spending trends.",
-            footer: "Cash conversion",
-          },
-    ],
-  },
-];
-
 const defaultTabId = "overview";
 const validTabIds = new Set(["overview", "financials"]);
-
-function findStockByQuery(query?: string) {
-  const normalizedQuery = query?.trim().toLowerCase();
-
-  if (!normalizedQuery) {
-    return stocks[0];
-  }
-
-  return (
-    stocks.find((stock) => stock.symbol.toLowerCase() === normalizedQuery) ??
-    stocks.find((stock) => stock.name.toLowerCase() === normalizedQuery) ??
-    stocks.find(
-      (stock) =>
-        stock.symbol.toLowerCase().includes(normalizedQuery) ||
-        stock.name.toLowerCase().includes(normalizedQuery),
-    ) ??
-    stocks[0]
-  );
-}
 
 function normalizeTabId(tabId?: string) {
   const normalizedTabId = tabId?.trim().toLowerCase();
@@ -154,31 +32,133 @@ function normalizeTabId(tabId?: string) {
   return normalizedTabId;
 }
 
-function StockDataBox({ title, eyebrow, body, footer }: StockBox) {
+function OverviewWidgetsLayout({ symbol }: { symbol: string }) {
+  return (
+    <section className="flex flex-col gap-4 lg:flex-row lg:items-start">
+      <div className="flex flex-col gap-4 lg:w-[70%]">
+        <ChartWidget symbol={symbol} />
+        <NewsWidget symbol={symbol} />
+      </div>
+      <div className="flex flex-col gap-4 lg:w-[30%]">
+        <InfoWidget symbol={symbol} />
+        <AnalystWidget symbol={symbol} />
+        <EarningsWidget symbol={symbol} />
+      </div>
+    </section>
+  );
+}
+
+type AnnualFinancial = {
+  year: string;
+  revenueBillions: number;
+  freeCashFlowBillions: number;
+  sharesOutstandingBillions: number;
+  dividendPerShare: number;
+};
+
+function toAnnualFinancials(symbol: string): AnnualFinancial[] {
+  const stock = getStockByQuery(symbol);
+  const grouped = new Map<string, AnnualFinancial & { quarterCount: number }>();
+
+  stock.financials.forEach((quarter) => {
+    const [year] = quarter.quarter.split("-");
+    const current = grouped.get(year) ?? {
+      year,
+      revenueBillions: 0,
+      freeCashFlowBillions: 0,
+      sharesOutstandingBillions: 0,
+      dividendPerShare: 0,
+      quarterCount: 0,
+    };
+
+    current.revenueBillions += quarter.revenueBillions;
+    current.freeCashFlowBillions += quarter.freeCashFlowBillions;
+    current.sharesOutstandingBillions += quarter.sharesOutstandingBillions;
+    current.dividendPerShare += quarter.dividendPerShare;
+    current.quarterCount += 1;
+
+    grouped.set(year, current);
+  });
+
+  return [...grouped.values()]
+    .sort((a, b) => Number(a.year) - Number(b.year))
+    .map(({ quarterCount, ...entry }) => ({
+      ...entry,
+      sharesOutstandingBillions: entry.sharesOutstandingBillions / quarterCount,
+    }));
+}
+
+type BarChartWidgetProps = {
+  title: string;
+  subtitle: string;
+  data: Array<{ label: string; value: number }>;
+  valueFormatter: (value: number) => string;
+};
+
+function BarChartWidget({ title, subtitle, data, valueFormatter }: BarChartWidgetProps) {
+  const maxValue = Math.max(...data.map((point) => point.value), 1);
+
   return (
     <article className="panel flex h-full flex-col p-5">
       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--text-soft)]">
-        {eyebrow}
+        {subtitle}
       </p>
       <h3 className="mt-3 text-base font-semibold text-zinc-950">{title}</h3>
-      <p className="mt-3 flex-1 text-sm leading-7 text-[var(--text-soft)]">{body}</p>
-      <p className="mt-4 text-xs font-medium text-zinc-500">{footer}</p>
+      <div className="mt-4 flex flex-1 items-end gap-3">
+        {data.map((point) => {
+          const barHeight = Math.max((point.value / maxValue) * 120, 4);
+
+          return (
+            <div key={`${title}-${point.label}`} className="flex flex-1 flex-col items-center gap-2">
+              <div className="text-xs font-medium text-zinc-700">{valueFormatter(point.value)}</div>
+              <div className="flex h-32 items-end">
+                <div className="w-9 rounded-t bg-zinc-900" style={{ height: `${barHeight}px` }} />
+              </div>
+              <div className="text-[11px] text-[var(--text-soft)]">{point.label}</div>
+            </div>
+          );
+        })}
+      </div>
     </article>
   );
 }
 
-function OverviewWidgetsLayout() {
+function FinancialsWidgetsLayout({ symbol }: { symbol: string }) {
+  const annual = toAnnualFinancials(symbol);
+  const yearlyData = annual.map((entry) => ({ label: entry.year, value: entry.revenueBillions }));
+  const fcfData = annual.map((entry) => ({ label: entry.year, value: entry.freeCashFlowBillions }));
+  const sharesData = annual.map((entry) => ({
+    label: entry.year,
+    value: entry.sharesOutstandingBillions,
+  }));
+  const dividendData = annual.map((entry) => ({ label: entry.year, value: entry.dividendPerShare }));
+
   return (
-    <section className="flex flex-col gap-4 lg:flex-row lg:items-start">
-      <div className="flex flex-col gap-4 lg:w-[70%]">
-        <ChartWidget />
-        <NewsWidget />
-      </div>
-      <div className="flex flex-col gap-4 lg:w-[30%]">
-        <InfoWidget />
-        <AnalystWidget />
-        <EarningsWidget />
-      </div>
+    <section className="grid gap-4 lg:grid-cols-2">
+      <BarChartWidget
+        title="Revenue"
+        subtitle="Annual View"
+        data={yearlyData}
+        valueFormatter={(value) => `${value.toFixed(1)}B`}
+      />
+      <BarChartWidget
+        title="Free Cash Flow"
+        subtitle="Annual View"
+        data={fcfData}
+        valueFormatter={(value) => `${value.toFixed(1)}B`}
+      />
+      <BarChartWidget
+        title="Shares Outstanding"
+        subtitle="Annual Average"
+        data={sharesData}
+        valueFormatter={(value) => `${value.toFixed(2)}B`}
+      />
+      <BarChartWidget
+        title="Dividend Per Share"
+        subtitle="Annual Total"
+        data={dividendData}
+        valueFormatter={(value) => `$${value.toFixed(2)}`}
+      />
     </section>
   );
 }
@@ -190,7 +170,7 @@ type StocksBrowserProps = {
 
 export function StocksBrowser({ stockQuery, currentTabId }: StocksBrowserProps) {
   const [favorites, setFavorites] = useState<string[]>([]);
-  const selectedStock = findStockByQuery(stockQuery);
+  const selectedStock = getStockByQuery(stockQuery);
   const selectedTabId = normalizeTabId(currentTabId);
 
   const activeTab = tabs.find((tab) => tab.id === selectedTabId) ?? tabs[0];
@@ -220,6 +200,9 @@ export function StocksBrowser({ stockQuery, currentTabId }: StocksBrowserProps) 
                 </h2>
               </div>
               <div className="mt-3 flex flex-wrap gap-2 text-sm text-[var(--text-soft)]">
+                <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1.5">
+                  Symbol: {selectedStock.symbol}
+                </span>
                 <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1.5">
                   Market: {selectedStock.market}
                 </span>
@@ -268,13 +251,9 @@ export function StocksBrowser({ stockQuery, currentTabId }: StocksBrowserProps) 
       </div>
 
       {activeTab.id === "overview" ? (
-        <OverviewWidgetsLayout />
+        <OverviewWidgetsLayout symbol={selectedStock.symbol} />
       ) : (
-        <section className="grid gap-4 lg:grid-cols-3">
-          {selectedStock.financialBoxes.map((box) => (
-            <StockDataBox key={`${activeTab.id}-${box.title}`} {...box} />
-          ))}
-        </section>
+        <FinancialsWidgetsLayout symbol={selectedStock.symbol} />
       )}
     </main>
   );
