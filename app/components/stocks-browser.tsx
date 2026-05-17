@@ -239,8 +239,8 @@ export function StocksBrowser({ stockQuery, currentTabId }: StocksBrowserProps) 
                 className={[
                   "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-zinc-900 text-white"
-                    : "bg-[var(--surface-muted)] text-zinc-600 hover:bg-white hover:text-zinc-950",
+                    ? "bg-zinc-900 !text-white visited:!text-white"
+                    : "bg-[var(--surface-muted)] text-zinc-600 visited:text-zinc-600 hover:bg-white hover:text-zinc-950",
                 ].join(" ")}
               >
                 {tab.label}
