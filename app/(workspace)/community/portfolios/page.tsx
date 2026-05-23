@@ -62,14 +62,14 @@ const portfolioPreviews: PortfolioPreview[] = [
 
 export default function CommunityPortfoliosPage() {
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-1 flex-col gap-6 px-4 pb-4 pt-2 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8">
-      <section className="panel p-5 sm:p-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-1 flex-col gap-6 p-4 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8">
+      <section className="">
+        <div className="border-b border-(--border) pb-6">
           <h1 className="text-2xl font-semibold tracking-tight text-zinc-950 sm:text-3xl">
             Community Portfolios
-          </h1>
-
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          </h1>          
+        </div>
+        <div className="flex flex-row justify-between pt-2 gap-3 sm:flex-row sm:items-center">
             <div className="inline-flex w-fit items-center rounded-xl border border-(--border) bg-[var(--surface-muted)] p-1">
               <button
                 type="button"
@@ -100,7 +100,6 @@ export default function CommunityPortfoliosPage() {
               </select>
             </label>
           </div>
-        </div>
       </section>
 
       <section className="grid gap-4">
