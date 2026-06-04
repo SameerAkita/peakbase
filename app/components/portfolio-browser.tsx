@@ -88,8 +88,6 @@ export function PortfolioBrowser({ currentTabId }: PortfolioBrowserProps) {
             <ChartCard
               title="chart"
               chartAriaLabel="Portfolio trend chart"
-              currentLabel="Portfolio value"
-              showPremarket={false}
               valueDecimals={0}
               data={portfolioChartData}
             />
@@ -122,11 +120,48 @@ export function PortfolioBrowser({ currentTabId }: PortfolioBrowserProps) {
           </div>
 
           <div className="flex flex-col gap-4 lg:w-[30%]">
-            <Box title="company intro" contentClassName="p-4">
-              <p>
-                This overview is intentionally structured like the stock page so the portfolio area feels familiar while we phase in real account data.
-              </p>
-            </Box>
+<Box title="allocation" contentClassName="p-4">
+  <p className="text-sm text-[var(--text-soft)]">
+    Current portfolio mix by weight.
+  </p>
+  <div className="mt-4 flex items-center justify-center">
+    <svg viewBox="0 0 160 160" className="h-48 w-48" role="img" aria-label="Portfolio allocation donut chart">
+      <circle cx="80" cy="80" r="48" fill="none" stroke="#e4e4e7" strokeWidth="24" />
+      <circle
+        cx="80"
+        cy="80"
+        r="48"
+        fill="none"
+        stroke="#18181b"
+        strokeWidth="24"
+        strokeDasharray="90 301.59"
+        transform="rotate(-90 80 80)"
+      />
+      <circle
+        cx="80"
+        cy="80"
+        r="48"
+        fill="none"
+        stroke="#3f3f46"
+        strokeWidth="24"
+        strokeDasharray="75 301.59"
+        strokeDashoffset="-90"
+        transform="rotate(-90 80 80)"
+      />
+      <circle
+        cx="80"
+        cy="80"
+        r="48"
+        fill="none"
+        stroke="#71717a"
+        strokeWidth="24"
+        strokeDasharray="62 301.59"
+        strokeDashoffset="-165"
+        transform="rotate(-90 80 80)"
+      />
+    </svg>
+  </div>
+</Box>
 
             <Box title="basic metrics" contentClassName="p-4">
               <dl className="space-y-2">

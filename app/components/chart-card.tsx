@@ -13,13 +13,9 @@ type ChartCardProps = {
   data: ChartCardPoint[];
   title?: string;
   chartAriaLabel: string;
-  currentLabel?: string;
-  premarketLabel?: string;
-  showPremarket?: boolean;
   valuePrefix?: string;
   valueSuffix?: string;
   valueDecimals?: number;
-  premarketValue?: number;
   className?: string;
 };
 
@@ -54,13 +50,9 @@ export function ChartCard({
   data,
   title,
   chartAriaLabel,
-  currentLabel = "Current price",
-  premarketLabel = "Pre-market",
-  showPremarket = true,
   valuePrefix = "$",
   valueSuffix = "",
   valueDecimals = 2,
-  premarketValue,
   className,
 }: ChartCardProps) {
   const [selectedRange, setSelectedRange] = useState<ChartRange>("YTD");
@@ -73,7 +65,6 @@ export function ChartCard({
   const changeAmount = currentValue - (firstPoint?.value ?? currentValue);
   const changePercent =
     firstPoint && firstPoint.value !== 0 ? (changeAmount / firstPoint.value) * 100 : 0;
-  const derivedPremarketValue = premarketValue ?? currentValue * 1.004;
 
   const chartWidth = 720;
   const chartHeight = 260;
@@ -109,41 +100,20 @@ export function ChartCard({
     <article className={["flex h-full flex-col", className].filter(Boolean).join(" ")}>
       {title ? <p className="px-4 text-sm font-medium">{title}</p> : null}
       <div className="panel flex h-full flex-col overflow-hidden">
-        <div
-          className={[
-            "grid gap-0 border-b border-[var(--border)]",
-            showPremarket ? "md:grid-cols-2" : "grid-cols-1",
-          ].join(" ")}
-        >
-          <div className="flex flex-col gap-2 px-5 py-4">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--text-soft)]">
-              {currentLabel}
-            </p>
-            <div className="flex flex-wrap items-end gap-x-3 gap-y-1">
-              <span className="text-3xl font-semibold tracking-tight text-zinc-950">
-                {formatValue(currentValue, valuePrefix, valueSuffix, valueDecimals)}
-              </span>
-              <span className={["text-sm font-semibold", changeTone].join(" ")}>
-                {changeSign}
-                {changePercent.toFixed(2)}%
-              </span>
-            </div>
-            <p className={["text-sm font-medium", changeTone].join(" ")}>
+        <div className="border-b border-[var(--border)] px-5 py-4">
+          <div className="flex flex-wrap items-end gap-x-3 gap-y-1">
+            <span className="text-3xl font-semibold tracking-tight text-zinc-950">
+              {formatValue(currentValue, valuePrefix, valueSuffix, valueDecimals)}
+            </span>
+            <span className={["text-sm font-semibold", changeTone].join(" ")}>
+              {changeSign}
+              {changePercent.toFixed(2)}%
+            </span>
+            <span className={["text-sm font-medium", changeTone].join(" ")}>
               {changeSign}
               {formatValue(Math.abs(changeAmount), valuePrefix, valueSuffix, valueDecimals)}
-            </p>
+            </span>
           </div>
-
-          {showPremarket ? (
-            <div className="flex flex-col justify-center gap-2 border-t border-[var(--border)] px-5 py-4 md:border-t-0 md:border-l">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--text-soft)]">
-                {premarketLabel}
-              </p>
-              <p className="text-2xl font-semibold tracking-tight text-zinc-950">
-                {formatValue(derivedPremarketValue, valuePrefix, valueSuffix, valueDecimals)}
-              </p>
-            </div>
-          ) : null}
         </div>
 
         <div className="relative min-h-[18rem] flex-1 overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)]">
@@ -219,15 +189,6 @@ export function ChartCard({
               />
             ))}
           </svg>
-
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between px-4 pb-4 text-xs text-[var(--text-soft)]">
-            <span>{visiblePoints[0]?.label ?? ""}</span>
-            <span>
-              {formatValue(minValue, valuePrefix, valueSuffix, valueDecimals)} to {" "}
-              {formatValue(maxValue, valuePrefix, valueSuffix, valueDecimals)}
-            </span>
-            <span>{visiblePoints[visiblePoints.length - 1]?.label ?? ""}</span>
-          </div>
         </div>
       </div>
     </article>
