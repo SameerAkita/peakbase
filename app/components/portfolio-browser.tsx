@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Box } from "./box";
+import { ChartCard } from "./chart-card";
 
 type PortfolioTab = {
   id: string;
@@ -15,6 +16,16 @@ const tabs: PortfolioTab[] = [
 
 const defaultTabId = "overview";
 const validTabIds = new Set(["overview", "holdings"]);
+const portfolioChartData = [
+  { label: "Jan", value: 387200 },
+  { label: "Feb", value: 392450 },
+  { label: "Mar", value: 398120 },
+  { label: "Apr", value: 401860 },
+  { label: "May", value: 407320 },
+  { label: "Jun", value: 412450 },
+  { label: "Jul", value: 416980 },
+  { label: "Aug", value: 421640 },
+];
 
 function normalizeTabId(tabId?: string) {
   const normalizedTabId = tabId?.trim().toLowerCase();
@@ -74,29 +85,14 @@ export function PortfolioBrowser({ currentTabId }: PortfolioBrowserProps) {
       {activeTab.id === "overview" ? (
         <section className="flex flex-col gap-4 lg:flex-row lg:items-start">
           <div className="flex flex-col gap-4 lg:w-[70%]">
-            <Box title="chart" className="h-full" contentClassName="p-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-xs text-[var(--text-soft)]">
-                  <span>Portfolio trend</span>
-                  <span>YTD</span>
-                </div>
-                <svg
-                  viewBox="0 0 720 180"
-                  className="h-52 w-full rounded-lg border border-[var(--border)] bg-white"
-                  role="img"
-                  aria-label="Portfolio trend chart"
-                >
-                  <polyline
-                    fill="none"
-                    stroke="rgb(24 24 27)"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    points="20,132 120,118 220,126 320,95 420,104 520,81 620,88 700,62"
-                  />
-                </svg>
-              </div>
-            </Box>
+            <ChartCard
+              title="chart"
+              chartAriaLabel="Portfolio trend chart"
+              currentLabel="Portfolio value"
+              showPremarket={false}
+              valueDecimals={0}
+              data={portfolioChartData}
+            />
 
             <Box title="news" contentClassName="p-4">
               <div className="space-y-4">
