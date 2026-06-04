@@ -92,7 +92,7 @@ export function PortfolioBrowser({ currentTabId }: PortfolioBrowserProps) {
               data={portfolioChartData}
             />
 
-            <Box title="news" contentClassName="p-4">
+            <Box contentClassName="p-4">
               <div className="space-y-4">
                 <article className="border-b border-[var(--border)] pb-3">
                   <h4 className="text-sm font-semibold text-zinc-900">Weekly rebalance complete</h4>
@@ -120,7 +120,7 @@ export function PortfolioBrowser({ currentTabId }: PortfolioBrowserProps) {
           </div>
 
           <div className="flex flex-col gap-4 lg:w-[30%]">
-<Box title="allocation" contentClassName="p-4">
+<Box contentClassName="p-4">
   <p className="text-sm text-[var(--text-soft)]">
     Current portfolio mix by weight.
   </p>
@@ -163,7 +163,7 @@ export function PortfolioBrowser({ currentTabId }: PortfolioBrowserProps) {
   </div>
 </Box>
 
-            <Box title="basic metrics" contentClassName="p-4">
+            <Box contentClassName="p-4">
               <dl className="space-y-2">
                 <div className="flex items-center justify-between gap-4">
                   <dt className="text-[13px] text-[var(--text-soft)]">Total Value</dt>
@@ -195,87 +195,87 @@ export function PortfolioBrowser({ currentTabId }: PortfolioBrowserProps) {
             </Box>
           </div>
         </section>
-      ) : (
-        <section className="flex flex-col gap-4 lg:flex-row lg:items-start">
-          <Box title="allocation" className="lg:w-[30%]" contentClassName="p-4">
-            <p className="text-sm text-[var(--text-soft)]">
-              Current portfolio mix by weight.
-            </p>
-            <div className="mt-4 flex items-center justify-center">
-              <svg viewBox="0 0 160 160" className="h-48 w-48" role="img" aria-label="Portfolio allocation donut chart">
-                <circle cx="80" cy="80" r="48" fill="none" stroke="#e4e4e7" strokeWidth="24" />
-                <circle
-                  cx="80"
-                  cy="80"
-                  r="48"
-                  fill="none"
-                  stroke="#18181b"
-                  strokeWidth="24"
-                  strokeDasharray="90 301.59"
-                  transform="rotate(-90 80 80)"
-                />
-                <circle
-                  cx="80"
-                  cy="80"
-                  r="48"
-                  fill="none"
-                  stroke="#3f3f46"
-                  strokeWidth="24"
-                  strokeDasharray="75 301.59"
-                  strokeDashoffset="-90"
-                  transform="rotate(-90 80 80)"
-                />
-                <circle
-                  cx="80"
-                  cy="80"
-                  r="48"
-                  fill="none"
-                  stroke="#71717a"
-                  strokeWidth="24"
-                  strokeDasharray="62 301.59"
-                  strokeDashoffset="-165"
-                  transform="rotate(-90 80 80)"
-                />
-              </svg>
-            </div>
-          </Box>
+) : (
+  <section className="flex flex-col gap-4 lg:flex-row lg:items-start">
+    <Box className="lg:w-[70%]" contentClassName="p-4">
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-separate border-spacing-0 text-sm">
+          <thead>
+            <tr className="text-left text-[var(--text-soft)]">
+              <th className="border-b border-[var(--border)] px-3 py-2 font-medium">Symbol</th>
+              <th className="border-b border-[var(--border)] px-3 py-2 font-medium">Name</th>
+              <th className="border-b border-[var(--border)] px-3 py-2 font-medium">Weight</th>
+              <th className="border-b border-[var(--border)] px-3 py-2 font-medium">P/L</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="border-b border-[var(--border)] px-3 py-2">AAPL</td>
+              <td className="border-b border-[var(--border)] px-3 py-2">Apple Inc.</td>
+              <td className="border-b border-[var(--border)] px-3 py-2">18.2%</td>
+              <td className="border-b border-[var(--border)] px-3 py-2 text-emerald-700">+14.8%</td>
+            </tr>
+            <tr>
+              <td className="border-b border-[var(--border)] px-3 py-2">MSFT</td>
+              <td className="border-b border-[var(--border)] px-3 py-2">Microsoft</td>
+              <td className="border-b border-[var(--border)] px-3 py-2">15.7%</td>
+              <td className="border-b border-[var(--border)] px-3 py-2 text-emerald-700">+9.3%</td>
+            </tr>
+            <tr>
+              <td className="border-b border-[var(--border)] px-3 py-2">NVDA</td>
+              <td className="border-b border-[var(--border)] px-3 py-2">NVIDIA</td>
+              <td className="border-b border-[var(--border)] px-3 py-2">12.9%</td>
+              <td className="border-b border-[var(--border)] px-3 py-2 text-emerald-700">+21.4%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </Box>
 
-          <Box title="current holdings" className="lg:w-[70%]" contentClassName="p-4">
-            <div className="overflow-x-auto">
-              <table className="min-w-full border-separate border-spacing-0 text-sm">
-                <thead>
-                  <tr className="text-left text-[var(--text-soft)]">
-                    <th className="border-b border-[var(--border)] px-3 py-2 font-medium">Symbol</th>
-                    <th className="border-b border-[var(--border)] px-3 py-2 font-medium">Name</th>
-                    <th className="border-b border-[var(--border)] px-3 py-2 font-medium">Weight</th>
-                    <th className="border-b border-[var(--border)] px-3 py-2 font-medium">P/L</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="border-b border-[var(--border)] px-3 py-2">AAPL</td>
-                    <td className="border-b border-[var(--border)] px-3 py-2">Apple Inc.</td>
-                    <td className="border-b border-[var(--border)] px-3 py-2">18.2%</td>
-                    <td className="border-b border-[var(--border)] px-3 py-2 text-emerald-700">+14.8%</td>
-                  </tr>
-                  <tr>
-                    <td className="border-b border-[var(--border)] px-3 py-2">MSFT</td>
-                    <td className="border-b border-[var(--border)] px-3 py-2">Microsoft</td>
-                    <td className="border-b border-[var(--border)] px-3 py-2">15.7%</td>
-                    <td className="border-b border-[var(--border)] px-3 py-2 text-emerald-700">+9.3%</td>
-                  </tr>
-                  <tr>
-                    <td className="border-b border-[var(--border)] px-3 py-2">NVDA</td>
-                    <td className="border-b border-[var(--border)] px-3 py-2">NVIDIA</td>
-                    <td className="border-b border-[var(--border)] px-3 py-2">12.9%</td>
-                    <td className="border-b border-[var(--border)] px-3 py-2 text-emerald-700">+21.4%</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </Box>
-        </section>
-      )}
+    <Box className="lg:w-[30%]" contentClassName="p-4">
+      <p className="text-sm text-[var(--text-soft)]">
+        Current portfolio mix by weight.
+      </p>
+      <div className="mt-4 flex items-center justify-center">
+        <svg viewBox="0 0 160 160" className="h-48 w-48" role="img" aria-label="Portfolio allocation donut chart">
+          <circle cx="80" cy="80" r="48" fill="none" stroke="#e4e4e7" strokeWidth="24" />
+          <circle
+            cx="80"
+            cy="80"
+            r="48"
+            fill="none"
+            stroke="#18181b"
+            strokeWidth="24"
+            strokeDasharray="90 301.59"
+            transform="rotate(-90 80 80)"
+          />
+          <circle
+            cx="80"
+            cy="80"
+            r="48"
+            fill="none"
+            stroke="#3f3f46"
+            strokeWidth="24"
+            strokeDasharray="75 301.59"
+            strokeDashoffset="-90"
+            transform="rotate(-90 80 80)"
+          />
+          <circle
+            cx="80"
+            cy="80"
+            r="48"
+            fill="none"
+            stroke="#71717a"
+            strokeWidth="24"
+            strokeDasharray="62 301.59"
+            strokeDashoffset="-165"
+            transform="rotate(-90 80 80)"
+          />
+        </svg>
+      </div>
+    </Box>
+  </section>
+)}
     </main>
   );
 }
