@@ -10,7 +10,6 @@ export function ChartWidget({ symbol }: ChartWidgetProps) {
 
   return (
     <ChartCard
-      title="chart"
       chartAriaLabel={`${stock.symbol} line chart`}
       data={stock.chartData.map((point) => ({ label: point.quarter, value: point.price }))}
     />

@@ -11,7 +11,6 @@ type ChartCardPoint = {
 
 type ChartCardProps = {
   data: ChartCardPoint[];
-  title?: string;
   chartAriaLabel: string;
   valuePrefix?: string;
   valueSuffix?: string;
@@ -48,7 +47,6 @@ function getVisiblePoints(data: ChartCardPoint[], range: ChartRange) {
 
 export function ChartCard({
   data,
-  title,
   chartAriaLabel,
   valuePrefix = "$",
   valueSuffix = "",
@@ -98,7 +96,6 @@ export function ChartCard({
 
   return (
     <article className={["flex h-full flex-col", className].filter(Boolean).join(" ")}>
-      {title ? <p className="px-4 text-sm font-medium">{title}</p> : null}
       <div className="panel flex h-full flex-col overflow-hidden">
         <div className="border-b border-[var(--border)] px-5 py-4">
           <div className="flex flex-wrap items-end gap-x-3 gap-y-1">

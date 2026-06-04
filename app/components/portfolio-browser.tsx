@@ -86,7 +86,6 @@ export function PortfolioBrowser({ currentTabId }: PortfolioBrowserProps) {
         <section className="flex flex-col gap-4 lg:flex-row lg:items-start">
           <div className="flex flex-col gap-4 lg:w-[70%]">
             <ChartCard
-              title="chart"
               chartAriaLabel="Portfolio trend chart"
               valueDecimals={0}
               data={portfolioChartData}
