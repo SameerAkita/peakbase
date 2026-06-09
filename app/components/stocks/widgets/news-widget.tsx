@@ -1,12 +1,13 @@
-import { getStockByQuery } from "../data";
+import { getStockByQuery, type CompanyData } from "../data";
 import { Box } from "../../box";
 
 type NewsWidgetProps = {
   symbol: string;
+  stock?: CompanyData;
 };
 
-export function NewsWidget({ symbol }: NewsWidgetProps) {
-  const stock = getStockByQuery(symbol);
+export function NewsWidget({ symbol, stock: stockProp }: NewsWidgetProps) {
+  const stock = stockProp ?? getStockByQuery(symbol);
 
   return (
     <Box title="news" contentClassName="p-4">

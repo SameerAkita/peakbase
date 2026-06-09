@@ -166,3 +166,14 @@ export function getStockByQuery(query?: string): CompanyData {
     stockData[0]
   );
 }
+
+
+export function getStockBySymbol(symbol?: string): CompanyData | undefined {
+  const normalizedSymbol = symbol?.trim().toLowerCase();
+
+  if (!normalizedSymbol) {
+    return undefined;
+  }
+
+  return stockData.find((stock) => stock.symbol.toLowerCase() === normalizedSymbol);
+}

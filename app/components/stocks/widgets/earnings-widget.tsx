@@ -1,12 +1,13 @@
-import { getStockByQuery } from "../data";
+import { getStockByQuery, type CompanyData } from "../data";
 import { Box } from "../../box";
 
 type EarningsWidgetProps = {
   symbol: string;
+  stock?: CompanyData;
 };
 
-export function EarningsWidget({ symbol }: EarningsWidgetProps) {
-  const stock = getStockByQuery(symbol);
+export function EarningsWidget({ symbol, stock: stockProp }: EarningsWidgetProps) {
+  const stock = stockProp ?? getStockByQuery(symbol);
   const latest = stock.financials.at(-1);
 
   if (!latest) {

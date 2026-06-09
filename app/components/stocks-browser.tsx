@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { getStockByQuery } from "./stocks/data";
+import { getStockByQuery, type CompanyData } from "./stocks/data";
 import { AnalystWidget } from "./stocks/widgets/analyst-widget";
 import { ChartWidget } from "./stocks/widgets/chart-widget";
 import { EarningsWidget } from "./stocks/widgets/earnings-widget";
@@ -32,17 +32,17 @@ function normalizeTabId(tabId?: string) {
   return normalizedTabId;
 }
 
-function OverviewWidgetsLayout({ symbol }: { symbol: string }) {
+function OverviewWidgetsLayout({ symbol, stock }: { symbol: string; stock: CompanyData }) {
   return (
     <section className="flex flex-col gap-4 lg:flex-row lg:items-start">
       <div className="flex flex-col gap-4 lg:w-[70%]">
-        <ChartWidget symbol={symbol} />
-        <NewsWidget symbol={symbol} />
+        <ChartWidget symbol={symbol} stock={stock} />
+        <NewsWidget symbol={symbol} stock={stock} />
       </div>
       <div className="flex flex-col gap-4 lg:w-[30%]">
-        <InfoWidget symbol={symbol} />
-        <AnalystWidget symbol={symbol} />
-        <EarningsWidget symbol={symbol} />
+        <InfoWidget symbol={symbol} stock={stock} />
+        <AnalystWidget symbol={symbol} stock={stock} />
+        <EarningsWidget symbol={symbol} stock={stock} />
       </div>
     </section>
   );
@@ -56,8 +56,7 @@ type AnnualFinancial = {
   dividendPerShare: number;
 };
 
-function toAnnualFinancials(symbol: string): AnnualFinancial[] {
-  const stock = getStockByQuery(symbol);
+function toAnnualFinancials(stock: CompanyData): AnnualFinancial[] {
   const grouped = new Map<string, AnnualFinancial & { quarterCount: number }>();
 
   stock.financials.forEach((quarter) => {
@@ -123,8 +122,8 @@ function BarChartWidget({ title, subtitle, data, valueFormatter }: BarChartWidge
   );
 }
 
-function FinancialsWidgetsLayout({ symbol }: { symbol: string }) {
-  const annual = toAnnualFinancials(symbol);
+function FinancialsWidgetsLayout({ stock }: { stock: CompanyData }) {
+  const annual = toAnnualFinancials(stock);
   const yearlyData = annual.map((entry) => ({ label: entry.year, value: entry.revenueBillions }));
   const fcfData = annual.map((entry) => ({ label: entry.year, value: entry.freeCashFlowBillions }));
   const sharesData = annual.map((entry) => ({
@@ -166,11 +165,12 @@ function FinancialsWidgetsLayout({ symbol }: { symbol: string }) {
 type StocksBrowserProps = {
   stockQuery?: string;
   currentTabId?: string;
+  stock?: CompanyData;
 };
 
-export function StocksBrowser({ stockQuery, currentTabId }: StocksBrowserProps) {
+export function StocksBrowser({ stockQuery, currentTabId, stock }: StocksBrowserProps) {
   const [favorites, setFavorites] = useState<string[]>([]);
-  const selectedStock = getStockByQuery(stockQuery);
+  const selectedStock = stock ?? getStockByQuery(stockQuery);
   const selectedTabId = normalizeTabId(currentTabId);
 
   const activeTab = tabs.find((tab) => tab.id === selectedTabId) ?? tabs[0];
@@ -251,9 +251,9 @@ export function StocksBrowser({ stockQuery, currentTabId }: StocksBrowserProps) 
       </div>
 
       {activeTab.id === "overview" ? (
-        <OverviewWidgetsLayout symbol={selectedStock.symbol} />
+        <OverviewWidgetsLayout symbol={selectedStock.symbol} stock={selectedStock} />
       ) : (
-        <FinancialsWidgetsLayout symbol={selectedStock.symbol} />
+        <FinancialsWidgetsLayout stock={selectedStock} />
       )}
     </main>
   );

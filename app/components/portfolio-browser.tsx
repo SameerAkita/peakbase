@@ -49,9 +49,6 @@ export function PortfolioBrowser({ currentTabId }: PortfolioBrowserProps) {
     <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
       <div className="flex flex-col gap-5 border-b border-(--border) pb-6">
         <div className="flex flex-col gap-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-soft)]">
-            Portfolio
-          </p>
           <h1 className="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
             Portfolio Workspace
           </h1>

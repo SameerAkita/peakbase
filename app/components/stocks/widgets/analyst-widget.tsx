@@ -1,12 +1,13 @@
-import { getStockByQuery } from "../data";
+import { getStockByQuery, type CompanyData } from "../data";
 import { Box } from "../../box";
 
 type AnalystWidgetProps = {
   symbol: string;
+  stock?: CompanyData;
 };
 
-export function AnalystWidget({ symbol }: AnalystWidgetProps) {
-  const stock = getStockByQuery(symbol);
+export function AnalystWidget({ symbol, stock: stockProp }: AnalystWidgetProps) {
+  const stock = stockProp ?? getStockByQuery(symbol);
 
   return (
     <Box title="basic metrics" contentClassName="p-4">

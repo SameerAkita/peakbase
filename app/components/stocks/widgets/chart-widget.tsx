@@ -1,12 +1,13 @@
 import { ChartCard } from "../../chart-card";
-import { getStockByQuery } from "../data";
+import { getStockByQuery, type CompanyData } from "../data";
 
 type ChartWidgetProps = {
   symbol: string;
+  stock?: CompanyData;
 };
 
-export function ChartWidget({ symbol }: ChartWidgetProps) {
-  const stock = getStockByQuery(symbol);
+export function ChartWidget({ symbol, stock: stockProp }: ChartWidgetProps) {
+  const stock = stockProp ?? getStockByQuery(symbol);
 
   return (
     <ChartCard
